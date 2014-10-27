@@ -23,32 +23,7 @@ include_directories(${EASTL_INCLUDE_DIR})
 
 # create library
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src LIB_SRCS)
+source_group("eastl" FILES ${LIB_SRCS})
 add_library(${PROJECT_NAME} STATIC ${LIB_SRCS})
 
-# test
-enable_testing()
-
-add_executable(example ${CMAKE_CURRENT_SOURCE_DIR}/contrib/example/example.cpp)
-target_link_libraries(example ${EASTL_LIBRARY})
-add_test(example ${EXECUTABLE_OUTPUT_PATH}/example)
-add_dependencies(example EASTL)
-
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/test TEST_SRCS)
-foreach(i ${TEST_SRCS})
-  get_filename_component(name ${i} NAME_WE)
-  set(name "test_${name}")
-
-  add_executable(${name} ${i})
-  target_link_libraries(${name} ${EASTL_LIBRARY})
-  add_test(${name} ${EXECUTABLE_OUTPUT_PATH}/${name})
-
-  add_dependencies(${name} EASTL)
-endforeach()
-
-
-# installing
-install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include
-  DESTINATION include
-  FILES_MATCHING PATTERN "*.h")
-install(TARGETS EASTL ARCHIVE DESTINATION lib)
+SET_DEFAULT_OUTPUT(${PROJECT_NAME})
